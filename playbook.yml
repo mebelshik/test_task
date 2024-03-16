@@ -9,8 +9,9 @@
         dest: /path/to/your/project
         version: main
 
-    - name: Build and run the Docker container
-      docker_compose:
-        project_src: /path/to/your/project
-        build: yes
-        state: present
+- name: Build and run the Docker container
+  docker_compose:
+    project_src: "{{ playbook_dir }}/path/relative/to/playbook"
+    build: yes
+    state: present
+
