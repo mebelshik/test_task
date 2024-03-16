@@ -26,4 +26,4 @@
                 - "80:80"
               volumes:
                 - /proc:/host_proc:ro
-              command: sh -c "echo 'CPU cores: '; nproc; echo 'Memory: '; free -h; echo 'Disk space: '; df -h"
+              command: "sh -c 'echo \"CPU cores: \"; nproc; echo \"Memory: \"; free -h; echo \"Disk space: \"; df -h'"
