@@ -1,3 +1,4 @@
 # test_task
 
-ansible-playbook ansible_playbook.yml
+ansible-playbook -i hosts playbook.yml
+
