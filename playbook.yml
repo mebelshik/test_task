@@ -1,0 +1,17 @@
+---
+- name: Setup and run Nginx container
+  hosts: localhost
+  tasks:
+    - name: Install Docker and Docker Compose
+      become: yes
+      yum:
+        name: ['docker', 'docker-compose']
+        state: present
+
+    - name: Start Nginx container
+      docker_compose:
+        project_src: /путь/к/вашему/каталогу/nginx
+        state: started
+        recreate: yes
+        files:
+          - docker-compose.yml
