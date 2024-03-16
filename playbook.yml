@@ -13,6 +13,7 @@
         repo: https://github.com/nginxinc/docker-nginx
         dest: /opt/docker-nginx
         update: yes
+      become: yes
 
     - name: Создание docker-compose файла
       template:
