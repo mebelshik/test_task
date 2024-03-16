@@ -10,3 +10,4 @@ services:
       - CPU_CORES={{ ansible_processor_cores }}
       - MEMORY={{ ansible_memtotal_mb }} MB
       - DISK_SPACE={{ ansible_mounts[0].size_total | int / 1024 / 1024 }} MB
+    recreate: always  # Изменено значение recreate
