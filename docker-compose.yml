@@ -1,0 +1,12 @@
+version: '3'
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /путь/к/вашему/html:/usr/share/nginx/html
+    environment:
+      - CPU_CORES={{ ansible_processor_cores }}
+      - MEMORY={{ ansible_memtotal_mb }} MB
+      - DISK_SPACE={{ ansible_mounts[0].size_total | int / 1024 / 1024 }} MB
