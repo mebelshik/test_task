@@ -1,0 +1,13 @@
+# Используйте официальный образ nginx
+FROM nginx:latest
+
+# Установите необходимые пакеты
+RUN apt-get update && \
+    apt-get install -y procps && \
+    rm -rf /var/lib/apt/lists/*
+
+# Скопируйте файл index.html в контейнер
+COPY index.html /usr/share/nginx/html/index.html
+
+# Запустите скрипт для отображения информации о системе
+CMD ["sh", "-c", "envsubst < /usr/share/nginx/html/index.html.template > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"]
