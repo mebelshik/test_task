@@ -3,7 +3,6 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-  tasks:
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
