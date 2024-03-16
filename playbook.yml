@@ -1,0 +1,28 @@
+# playbook.yml
+- hosts: localhost
+  become: yes
+  tasks:
+    - name: Clone the repository
+      git:
+        repo: 'https://github.com/mebelshik/test_task.git'
+        dest: ./test_task
+        version: main
+
+    - name: Start nginx using docker-compose
+      community.docker.docker_compose:
+        project_src: ./test_task
+        state: present
+
+    - name: Create index.html
+      copy:
+        dest: "./test_task/html/index.html"
+        content: |
+          <html>
+          <head><title>System Info</title></head>
+          <body>
+          <h1>System Information</h1>
+          <p>CPU Cores: {{ ansible_processor_cores }}</p>
+          <p>Memory: {{ ansible_memtotal_mb }} MB</p>
+          <p>Disk Space: {{ ansible_facts.devices['sda'].size }} GB</p>
+          </body>
+          </html>
