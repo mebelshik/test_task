@@ -1,3 +1,4 @@
+- name: Clone repository and build Docker container
 - hosts: localhost
   become: yes
   vars:
@@ -6,12 +7,11 @@
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
-        dest: /path/to/your/project
+        dest: "{{ project_src }}"
         version: main
 
 - name: Build and run the Docker container
-  docker_compose:
-    project_src: "{{ playbook_dir }}/path/relative/to/playbook"
-    build: yes
-    state: present
-
+      docker_compose:
+        project_src: "{{ project_src }}"
+        build: yes
+        state: present
