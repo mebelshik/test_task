@@ -1,17 +1,24 @@
+# playbook.yml
 ---
-- name: Setup and run Nginx container
-  hosts: localhost
+- hosts: localhost
   tasks:
-    - name: Install Docker and Docker Compose
-      become: yes
+    - name: Установка docker-compose
       yum:
-        name: ['docker', 'docker-compose']
+        name: docker-compose
         state: present
 
-    - name: Start Nginx container
-      docker_compose:
-        project_src: /путь/к/вашему/каталогу/nginx
-        state: started
-        recreate: yes
-        files:
-          - docker-compose.yml
+    - name: Клонирование репозитория с контентом для сайта
+      git:
+        repo: https://github.com/nginxinc/docker-nginx
+        dest: /opt/docker-nginx
+        update: yes
+
+    - name: Создание docker-compose файла
+      template:
+        src: docker-compose.yml.j2
+        dest: /opt/docker-nginx/docker-compose.yml
+
+    - name: Запуск docker-compose
+      command: docker-compose up -d
+      args:
+        chdir: /opt/docker-nginx
