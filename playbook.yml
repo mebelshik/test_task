@@ -1,6 +1,7 @@
 # playbook.yml
 ---
 - hosts: localhost
+  connection: local
   tasks:
     - name: Установка docker-compose
       yum:
