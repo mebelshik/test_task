@@ -1,8 +1,0 @@
-# ansible_playbook.yml
----
-- name: Start nginx container with system info webpage
-  hosts: localhost
-  connection: local
-  tasks:
-    - name: Run docker-compose
-      command: docker-compose -f /path/to/docker-compose.yml up -d
