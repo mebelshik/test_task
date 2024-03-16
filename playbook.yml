@@ -1,8 +1,10 @@
+---
 - name: Clone repository and build Docker container
-- hosts: localhost
+  hosts: localhost
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    project_src: /path/to/your/project
   tasks:
     - name: Clone the repository
       git:
@@ -11,7 +13,7 @@
         version: main
 
 - name: Build and run the Docker container
-      docker_compose:
-        project_src: "{{ project_src }}"
-        build: yes
-        state: present
+  docker_compose:
+    project_src: "{{ project_src }}"
+    build: yes
+    state: present
