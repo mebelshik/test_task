@@ -1,5 +1,5 @@
 ---
-- name: Build and run the Docker container with nginx
+- name: Clone repository and build Docker container with nginx
   hosts: localhost
   become: yes
   vars:
@@ -15,6 +15,8 @@
     - name: Build and run the Docker container
       docker_compose:
         project_src: "{{ project_src }}"
+        build: yes
+        state: present
         definition:
           version: '3'
           services:
@@ -24,22 +26,4 @@
                 - "80:80"
               volumes:
                 - /proc:/host_proc:ro
-              command: sh -c "echo 'CPU cores: '; nproc; echo 'Memory: '; free -h; echo 'Disk space: '; df -h"---
-- name: Clone repository and build Docker container
-  hosts: localhost
-  become: yes
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-    project_src: /path/to/your/project
-  tasks:
-    - name: Clone the repository
-      git:
-        repo: 'https://github.com/mebelshik/test_task.git'
-        dest: "{{ project_src }}"
-        version: main
-
-- name: Build and run the Docker container
-  docker_compose:
-    project_src: "{{ project_src }}"
-    build: yes
-    state: present
+              command: sh -c "echo 'CPU cores: '; nproc; echo 'Memory: '; free -h; echo 'Disk space: '; df -h"
