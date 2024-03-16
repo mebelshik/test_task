@@ -1,9 +1,10 @@
-# docker-compose.yml
 version: '3'
 services:
   web:
-    image: nginx
-    volumes:
-      - ./html:/usr/share/nginx/html
+    build: .
     ports:
       - "80:80"
+    environment:
+      CPU_CORES: "${CPU_CORES}"
+      MEMORY: "${MEMORY}"
+      DISK_SPACE: "${DISK_SPACE}"
