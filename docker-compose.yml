@@ -1,12 +1,15 @@
-# docker-compose.yml.j2
 version: '3'
 services:
-  web:
+  nginx:
     image: nginx
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    command: /bin/sh -c "while true; do echo '<html><body><h1>Количество ядер CPU: {{ ansible_processor_cores }}<br>Память: {{ ansible_memtotal_mb }} MB<br>Дисковое пространство: {{ ansible_mounts[2].size_total }} bytes</h1></body></html>' > /usr/share/nginx/html/index.html; sleep 1; done"
+    environment:
+      - CPU_CORES=${ ansible_processor_cores }
+      - MEMORY=${ ansible_memtotal_mb } MB
+      - DISK_SPACE=${ ansible_mounts[0].size_total | int / 1024 / 1024 } MB
+    restart: unless-stopped
