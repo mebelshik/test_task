@@ -1,26 +1,16 @@
-# playbook.yml
----
-- hosts: localhost
-  connection: local
-  tasks:
-    - name: Установка docker-compose
-      yum:
-        name: docker-compose
-        state: present
+- name: Установка docker-compose
+  command: pip install docker-compose
 
-    - name: Клонирование репозитория с контентом для сайта
-      git:
-        repo: https://github.com/nginxinc/docker-nginx
-        dest: /opt/docker-nginx
-        update: yes
-      become: yes
+- name: Клонирование репозитория с контентом для сайта
+  git:
+    repo: https://github.com/mebelshik/test_task.git
+    dest: /opt/docker-nginx
+    version: main
 
-    - name: Создание docker-compose файла
-      template:
-        src: docker-compose.yml.j2
-        dest: /opt/docker-nginx/docker-compose.yml
-
-    - name: Запуск docker-compose
-      command: docker-compose up -d
-      args:
-        chdir: /opt/docker-nginx
+- name: Создание docker-compose файла
+  copy:
+    src: /opt/docker-nginx/docker-compose.yml
+    dest: /opt/docker-nginx/docker-compose.yml
+    owner: your_username
+    group: your_group
+    mode: '0644'
