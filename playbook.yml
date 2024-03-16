@@ -1,9 +1,5 @@
-- hosts: all
-  become: yes
-  vars:
-    CPU_CORES: "{{ ansible_processor_vcpus }}"
-    MEMORY: "{{ ansible_memtotal_mb }}"
-    DISK_SPACE: "{{ ansible_devices.sda.size }}"
+- hosts: localhost
+  connection: local
   tasks:
     - name: Clone the repository
       git:
@@ -12,7 +8,7 @@
         version: main
 
     - name: Build and run the Docker container
-      community.docker.docker_compose:
+      docker_compose:
         project_src: /path/to/your/project
         build: yes
         state: present
