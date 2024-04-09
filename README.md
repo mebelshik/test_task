@@ -1,14 +1,4 @@
 # test_task
 
-# URL
-https://github.com/mebelshik/test_task.git
+bash <(curl -s https://raw.githubusercontent.com/mebelshik/test_task/main/run.sh)
 
-
-git clone https://github.com/mebelshik/test_task.git
-
-# Команда для запуска контейнера
-sudo ansible-playbook -i hosts playbook.yml
-
-172.20.0.2
-
-http://localhost/
