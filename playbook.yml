@@ -1,6 +1,7 @@
 ---
 - name: Clone repository and build Docker container with nginx
   hosts: localhost
+  connection: local
   become: yes
   vars:
     project_src: /path/to/your/project
