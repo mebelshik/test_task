@@ -1,5 +1,4 @@
 FROM nginx:latest
-RUN if command -v apt-get > /dev/null; then apt-get update && apt-get install -y procps && rm -rf /var/lib/apt/lists/*; elif command -v yum > /dev/null; then yum -y update && yum -y install procps && yum clean all; fi
-COPY index.html.template /usr/share/nginx/html/index.html.template
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-CMD ["/bin/bash", "-c", "CPU_CORES=$(nproc) && MEMORY=$(free -m | awk '/^Mem:/{print $2}')M && DISK_SPACE=$(df -h / | awk 'NR==2 {print $4}') && envsubst < /usr/share/nginx/html/index.html.template
+RUN apt-get update && apt-get install -y procps
+COPY index.html /usr/share/nginx/html/index.html
+CMD /bin/bash -c "echo -e \"<h1>System Information</h1><p>CPU Cores: \$(nproc)</p><p>Memory: \$(free -m | awk '/^Mem:/{print \$2}')MB</p><p>Disk Space: \$(df -h / | awk 'NR==2 {print \$4}')</p>\" > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"
