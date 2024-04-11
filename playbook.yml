@@ -12,17 +12,15 @@
 
     - name: Get system info
       shell: |
-        echo CPUS=$(nproc) > .env
-        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> .env
-        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> .env
+        echo CPUS=$(nproc) > {{ ansible_env.HOME }}/test_task/.env
+        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> {{ ansible_env.HOME }}/test_task/.env
+        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> {{ ansible_env.HOME }}/test_task/.env
       args:
-        chdir: /path/to/your/local/folder
+        chdir: "{{ ansible_env.HOME }}/test_task"
 
     - name: Run docker-compose to start Nginx container
       docker_compose:
-        project_src: /path/to/your/local/folder
-        env_file: .env
+        project_src: "{{ ansible_env.HOME }}/test_task"
+        env_file: "{{ ansible_env.HOME }}/test_task/.env"
         build: yes
         state: present
-
-    # Дополнительные шаги для настройки сайта...
