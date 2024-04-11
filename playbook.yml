@@ -4,16 +4,16 @@
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    project_src: /path/to/your/project
+    project_path: /path/to/your/project  # Изменено с project_src на project_path
   tasks:
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
-        dest: "{{ project_src }}"
+        dest: "{{ project_path }}"
         version: main
 
     - name: Build and run the Docker container
       docker_compose:
-        project_src: "{{ project_src }}"
+        project_path: "{{ project_path }}"  # Исправлено с project_src на project_path
         build: yes
         state: present
