@@ -49,6 +49,14 @@
         recurse: yes
         mode: '0755'
 
+    - name: Copy Nginx configuration to the correct location
+      copy:
+        src: "/path/to/your/nginx.conf"
+        dest: "/etc/nginx/conf.d/default.conf"
+        owner: root
+        group: root
+        mode: '0644'
+
     - name: Run docker-compose to start Nginx container
       docker_compose:
         project_src: "/tmp/test_task"
