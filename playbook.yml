@@ -4,18 +4,6 @@
   connection: local
   become: yes
   tasks:
-    - name: Check if nginx user exists
-      getent:
-        database: passwd
-        key: nginx
-      register: nginx_user
-
-    - name: Create nginx user if it---
-- name: Deploy website with system info
-  hosts: localhost
-  connection: local
-  become: yes
-  tasks:
     - name: Install Nginx
       apt:
         name: nginx
@@ -75,60 +63,6 @@
         group: root
         mode: '0644'
       become: yes
-
-    - name: Run docker-compose to start Nginx container
-      docker_compose:
-        project_src: "/tmp/test_task"
-        env_file: "/tmp/test_task/.env"
-        build: yes
-        state: present
-...
- does not exist
-      user:
-        name: nginx
-        system: yes
-        create_home: yes
-      when: nginx_user is not defined
-
-    - name: Remove existing directory if it exists
-      file:
-        path: "/tmp/test_task"
-        state: absent
-
-    - name: Clone the repository
-      git:
-        repo: 'https://github.com/mebelshik/test_task.git'
-        dest: "/tmp/test_task"
-        force: yes
-      become: yes
-      become_user: nginx
-
-    - name: Get system info
-      shell: |
-        echo CPUS=$(nproc) > /tmp/test_task/.env
-        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> /tmp/test_task/.env
-        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> /tmp/test_task/.env
-      args:
-        chdir: "/tmp/test_task"
-      become: yes
-      become_user: nginx
-
-    - name: Ensure Nginx user has permissions to access the web root
-      file:
-        path: "/tmp/test_task"
-        owner: nginx
-        group: nginx
-        state: directory
-        recurse: yes
-        mode: '0755'
-
-    - name: Copy Nginx configuration to the correct location
-      copy:
-        src: "nginx.conf"
-        dest: "/etc/nginx/conf.d/default.conf"
-        owner: root
-        group: root
-        mode: '0644'
 
     - name: Run docker-compose to start Nginx container
       docker_compose:
