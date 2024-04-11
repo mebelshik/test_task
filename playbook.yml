@@ -5,5 +5,5 @@
     - name: Build and run Docker container
       command: docker-compose up -d
       args:
-        chdir: /path/to/your/docker-compose/directory
+        chdir: "{{ playbook_dir }}"
 ...
