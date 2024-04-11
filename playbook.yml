@@ -20,24 +20,20 @@
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
-        dest: "/home/nginx/test_task"
+        dest: "/tmp/test_task"
         force: yes
-      become: yes
-      become_user: nginx
 
     - name: Get system info
       shell: |
-        echo CPUS=$(nproc) > /home/nginx/test_task/.env
-        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> /home/nginx/test_task/.env
-        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> /home/nginx/test_task/.env
+        echo CPUS=$(nproc) > /tmp/test_task/.env
+        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> /tmp/test_task/.env
+        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> /tmp/test_task/.env
       args:
-        chdir: "/home/nginx/test_task"
-      become: yes
-      become_user: nginx
+        chdir: "/tmp/test_task"
 
     - name: Ensure Nginx user has permissions to access the web root
       file:
-        path: "/home/nginx/test_task"
+        path: "/tmp/test_task"
         owner: nginx
         group: nginx
         state: directory
@@ -46,8 +42,8 @@
 
     - name: Run docker-compose to start Nginx container
       docker_compose:
-        project_src: "/home/nginx/test_task"
-        env_file: "/home/nginx/test_task/.env"
+        project_src: "/tmp/test_task"
+        env_file: "/tmp/test_task/.env"
         build: yes
         state: present
 ...
