@@ -1,13 +1,32 @@
-
-
-
-  
-  
-
-
-  Ресурсы контейнера
-  
-    Количество ядер CPU: {{ cpu_cores }}
-    Память: {{ memory }}
-    Дисковое пространство: {{ disk_space }}
-  
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Информация о контейнере</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ресурсы контейнера</h1>
+        <p><strong>Количество ядер CPU:</strong> {{ cpu_cores }}</p>
+        <p><strong>Память:</strong> {{ memory }}</p>
+        <p><strong>Дисковое пространство:</strong> {{ disk_space }}</p>
+    </div>
+</body>
+</html>
