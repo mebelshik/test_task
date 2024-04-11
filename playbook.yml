@@ -7,7 +7,8 @@
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
-        dest: /home
+        dest: "{{ ansible_env.HOME }}/test_task"
+        force: yes
 
     - name: Get system info
       shell: |
