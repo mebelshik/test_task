@@ -5,16 +5,17 @@
   become: yes
   tasks:
     - name: Check if nginx user exists
-      command: id -u nginx
+      getent:
+        database: passwd
+        key: nginx
       register: nginx_user
-      ignore_errors: yes
 
     - name: Create nginx user if it does not exist
       user:
         name: nginx
         system: yes
         create_home: no
-      when: nginx_user.rc != 0
+      when: nginx_user is not defined
 
     - name: Clone the repository
       git:
