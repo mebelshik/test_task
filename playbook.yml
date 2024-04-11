@@ -4,6 +4,18 @@
   connection: local
   become: yes
   tasks:
+    - name: Check if nginx user exists
+      command: id -u nginx
+      register: nginx_user
+      ignore_errors: yes
+
+    - name: Create nginx user if it does not exist
+      user:
+        name: nginx
+        system: yes
+        create_home: no
+      when: nginx_user.rc != 0
+
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
@@ -33,3 +45,4 @@
         env_file: "{{ ansible_env.HOME }}/test_task/.env"
         build: yes
         state: present
+...
