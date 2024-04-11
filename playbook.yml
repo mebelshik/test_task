@@ -1,19 +1,27 @@
 ---
-- name: Clone repository and build Docker container with nginx
+- name: Deploy website with system info
   hosts: localhost
   connection: local
   become: yes
-  vars:
-    project_src: /path/to/your/project
   tasks:
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
-        dest: "{{ project_src }}"
-        version: main
+        dest: /path/to/your/local/folder
 
-    - name: Build and run the Docker container
+    - name: Get system info
+      shell: |
+        echo CPUS=$(nproc) > .env
+        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> .env
+        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> .env
+      args:
+        chdir: /path/to/your/local/folder
+
+    - name: Run docker-compose to start Nginx container
       docker_compose:
-        project_src: "{{ project_src }}"
+        project_src: /path/to/your/local/folder
+        env_file: .env
         build: yes
         state: present
+
+    # Дополнительные шаги для настройки сайта...
