@@ -1,14 +1,6 @@
-version: '3.8'
+version: '3'
 services:
   web:
-    image: nginx:latest
+    build: .
     ports:
-      - "8080:80"
-    volumes:
-      - ./web:/usr/share/nginx/html:ro
-      - /:/host_root:ro
-      - /etc/nginx/conf.d:/etc/nginx/conf.d
-    environment:
-      - CPUS=${CPUS}
-      - MEM_LIMIT=${MEM_LIMIT}
-      - DISK_SIZE=${DISK_SIZE}
+      - "80:80"
