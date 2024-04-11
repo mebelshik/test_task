@@ -18,6 +18,15 @@
       args:
         chdir: "{{ ansible_env.HOME }}/test_task"
 
+    - name: Ensure Nginx user has permissions to access the web root
+      file:
+        path: "{{ ansible_env.HOME }}/test_task"
+        owner: nginx
+        group: nginx
+        state: directory
+        recurse: yes
+        mode: '0755'
+
     - name: Run docker-compose to start Nginx container
       docker_compose:
         project_src: "{{ ansible_env.HOME }}/test_task"
