@@ -17,11 +17,18 @@
         create_home: yes
       when: nginx_user is not defined
 
+    - name: Remove existing directory if it exists
+      file:
+        path: "/tmp/test_task"
+        state: absent
+
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
         dest: "/tmp/test_task"
         force: yes
+      become: yes
+      become_user: nginx
 
     - name: Get system info
       shell: |
@@ -30,6 +37,8 @@
         echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> /tmp/test_task/.env
       args:
         chdir: "/tmp/test_task"
+      become: yes
+      become_user: nginx
 
     - name: Ensure Nginx user has permissions to access the web root
       file:
