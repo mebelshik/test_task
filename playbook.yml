@@ -14,26 +14,30 @@
       user:
         name: nginx
         system: yes
-        create_home: no
+        create_home: yes
       when: nginx_user is not defined
 
     - name: Clone the repository
       git:
         repo: 'https://github.com/mebelshik/test_task.git'
-        dest: "{{ ansible_env.HOME }}/test_task"
+        dest: "/home/nginx/test_task"
         force: yes
+      become: yes
+      become_user: nginx
 
     - name: Get system info
       shell: |
-        echo CPUS=$(nproc) > {{ ansible_env.HOME }}/test_task/.env
-        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> {{ ansible_env.HOME }}/test_task/.env
-        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> {{ ansible_env.HOME }}/test_task/.env
+        echo CPUS=$(nproc) > /home/nginx/test_task/.env
+        echo MEM_LIMIT=$(free -m | grep Mem | awk '{print $2}')MB >> /home/nginx/test_task/.env
+        echo DISK_SIZE=$(df -h | grep /usr/share/nginx/html | awk '{print $4}') >> /home/nginx/test_task/.env
       args:
-        chdir: "{{ ansible_env.HOME }}/test_task"
+        chdir: "/home/nginx/test_task"
+      become: yes
+      become_user: nginx
 
     - name: Ensure Nginx user has permissions to access the web root
       file:
-        path: "{{ ansible_env.HOME }}/test_task"
+        path: "/home/nginx/test_task"
         owner: nginx
         group: nginx
         state: directory
@@ -42,8 +46,8 @@
 
     - name: Run docker-compose to start Nginx container
       docker_compose:
-        project_src: "{{ ansible_env.HOME }}/test_task"
-        env_file: "{{ ansible_env.HOME }}/test_task/.env"
+        project_src: "/home/nginx/test_task"
+        env_file: "/home/nginx/test_task/.env"
         build: yes
         state: present
 ...
