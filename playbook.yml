@@ -1,0 +1,9 @@
+---
+- name: Deploy Nginx website with system info
+  hosts: localhost
+  tasks:
+    - name: Build and run Docker container
+      command: docker-compose up -d
+      args:
+        chdir: /path/to/your/docker-compose/directory
+...
